@@ -7,10 +7,22 @@
 			"metadata": "Workspace name",
 			"defaultValue": "synapsemjf2023"
 		},
+		"AdventureworksBie2eDW_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AdventureworksBie2eDW'"
+		},
+		"datalake_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'datalake'"
+		},
 		"synapsemjf2023-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'synapsemjf2023-WorkspaceDefaultSqlServer'",
 			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:synapsemjf2023.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"datalake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://mjf2023datalake.dfs.core.windows.net/"
 		},
 		"synapsemjf2023-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"type": "string",
@@ -21,6 +33,127 @@
 		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/Fileinthedatalake')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "datalake",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "products-exported"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/datalake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/sqlproductstable')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AdventureworksBie2eDW",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SKProduct",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductBusinessKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SubcategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Colour",
+						"type": "nvarchar"
+					},
+					{
+						"name": "StyleSizeProductLine",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimProduct"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AdventureworksBie2eDW')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AdventureworksBie2eDW')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AdventureworksBie2eDW_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/datalake')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('datalake_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('datalake_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/synapsemjf2023-WorkspaceDefaultSqlServer')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
@@ -114,7 +247,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "23e3418b-b8ef-4a93-8dd6-cd8188d0346c"
+						"spark.autotune.trackingId": "343b15db-fe6d-4903-873f-1590a4e6801a"
 					}
 				},
 				"metadata": {
@@ -139,8 +272,7 @@
 						"sparkVersion": "3.3",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
