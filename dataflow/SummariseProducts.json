@@ -1,5 +1,5 @@
 {
-	"name": "Dataflow1",
+	"name": "SummariseProducts",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

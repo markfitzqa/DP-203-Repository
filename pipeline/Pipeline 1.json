@@ -157,7 +157,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Dataflow1",
+						"referenceName": "SummariseProducts",
 						"type": "DataFlowReference"
 					},
 					"compute": {
