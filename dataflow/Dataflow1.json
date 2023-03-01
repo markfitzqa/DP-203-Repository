@@ -12,7 +12,11 @@
 					"name": "productsdata"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "CountTheProducts"
@@ -34,7 +38,16 @@
 				"     format: 'table') ~> productsdata",
 				"productsdata aggregate(groupBy(CategoryName),",
 				"     NumberProducts = count(),",
-				"          LastSK = max(SKProduct)) ~> CountTheProducts"
+				"          LastSK = max(SKProduct)) ~> CountTheProducts",
+				"CountTheProducts sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          CategoryName,",
+				"          NumberProducts,",
+				"          LastSK",
+				"     )) ~> sink1"
 			]
 		}
 	}
