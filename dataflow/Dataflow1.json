@@ -1,0 +1,41 @@
+{
+	"name": "Dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "sqlproductstable",
+						"type": "DatasetReference"
+					},
+					"name": "productsdata"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "CountTheProducts"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          SKProduct as integer,",
+				"          ProductBusinessKey as integer,",
+				"          ProductName as string,",
+				"          SubcategoryName as string,",
+				"          CategoryName as string,",
+				"          Colour as string,",
+				"          StyleSizeProductLine as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> productsdata",
+				"productsdata aggregate(groupBy(CategoryName),",
+				"     NumberProducts = count(),",
+				"          LastSK = max(SKProduct)) ~> CountTheProducts"
+			]
+		}
+	}
+}
