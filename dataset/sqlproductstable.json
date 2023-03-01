@@ -1,5 +1,5 @@
 {
-	"name": "productstable",
+	"name": "sqlproductstable",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AdventureworksBie2eDW",
