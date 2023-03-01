@@ -1,0 +1,6 @@
+{
+	"name": "MyOnPremRunner",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
