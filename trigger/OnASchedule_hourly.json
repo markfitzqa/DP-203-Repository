@@ -1,0 +1,17 @@
+{
+	"name": "OnASchedule_hourly",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 1,
+				"startTime": "2023-03-01T10:48:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}
