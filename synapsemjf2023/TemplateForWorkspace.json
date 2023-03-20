@@ -15,20 +15,12 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'datalake'"
 		},
-		"productssummary_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'productssummary'"
-		},
 		"synapsemjf2023-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'synapsemjf2023-WorkspaceDefaultSqlServer'",
 			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:synapsemjf2023.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
 		"datalake_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://mjf2023datalake.dfs.core.windows.net/"
-		},
-		"productssummary_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mjf2023datalake.dfs.core.windows.net/"
 		},
@@ -41,112 +33,6 @@
 		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('workspaceName'), '/DelimitedText1')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "productssummary",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "products-summarised"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/productssummary')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/Fileinthedatalake')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "datalake",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "products-exported"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/datalake')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/sqlproductstable')]",
-			"type": "Microsoft.Synapse/workspaces/datasets",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AdventureworksBie2eDW",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "SKProduct",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductBusinessKey",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SubcategoryName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CategoryName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Colour",
-						"type": "nvarchar"
-					},
-					{
-						"name": "StyleSizeProductLine",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "DimProduct"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/AdventureworksBie2eDW')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/AdventureworksBie2eDW')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
@@ -178,29 +64,6 @@
 					"accountKey": {
 						"type": "SecureString",
 						"value": "[parameters('datalake_accountKey')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/productssummary')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('productssummary_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('productssummary_accountKey')]"
 					}
 				},
 				"connectVia": {
@@ -295,73 +158,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SummariseProducts')]",
-			"type": "Microsoft.Synapse/workspaces/dataflows",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "sqlproductstable",
-								"type": "DatasetReference"
-							},
-							"name": "productsdata"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText1",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "CountTheProducts"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          SKProduct as integer,",
-						"          ProductBusinessKey as integer,",
-						"          ProductName as string,",
-						"          SubcategoryName as string,",
-						"          CategoryName as string,",
-						"          Colour as string,",
-						"          StyleSizeProductLine as string",
-						"     ),",
-						"     allowSchemaDrift: false,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> productsdata",
-						"productsdata aggregate(groupBy(CategoryName),",
-						"     NumberProducts = count(),",
-						"          LastSK = max(SKProduct)) ~> CountTheProducts",
-						"CountTheProducts sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          CategoryName,",
-						"          NumberProducts,",
-						"          LastSK",
-						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/datasets/sqlproductstable')]",
-				"[concat(variables('workspaceId'), '/datasets/DelimitedText1')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
 			"type": "Microsoft.Synapse/workspaces/credentials",
 			"apiVersion": "2019-06-01-preview",
@@ -372,74 +168,125 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/Reading 06 csv')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"name": "[concat(parameters('workspaceName'), '/XYZ')]",
+			"type": "Microsoft.Synapse/workspaces/databases",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"bigDataPool": {
-					"referenceName": "smallspark",
-					"type": "BigDataPoolReference"
-				},
-				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
-					"numExecutors": 2,
-					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "343b15db-fe6d-4903-873f-1590a4e6801a"
-					}
-				},
-				"metadata": {
-					"saveOutput": true,
-					"enableDebugMode": false,
-					"kernelspec": {
-						"name": "synapse_pyspark",
-						"display_name": "Synapse PySpark"
-					},
-					"language_info": {
-						"name": "python"
-					},
-					"a365ComputeOptions": {
-						"id": "/subscriptions/cba76e95-fd39-4fc5-a1ba-69a333c52acd/resourceGroups/MSDN_Databases/providers/Microsoft.Synapse/workspaces/synapsemjf2023/bigDataPools/smallspark",
-						"name": "smallspark",
-						"type": "Spark",
-						"endpoint": "https://synapsemjf2023.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/smallspark",
-						"auth": {
-							"type": "AAD",
-							"authResource": "https://dev.azuresynapse.net"
-						},
-						"sparkVersion": "3.3",
-						"nodeCount": 3,
-						"cores": 4,
-						"memory": 28
-					},
-					"sessionKeepAliveTimeout": 30
-				},
-				"cells": [
+				"Ddls": [
 					{
-						"cell_type": "code",
-						"metadata": {
-							"microsoft": {
-								"language": "python"
+						"ActionType": "CREATE",
+						"OldEntity": null,
+						"NewEntity": {
+							"Name": "XYZ",
+							"EntityType": "DATABASE",
+							"Origin": {
+								"Type": "SPARK"
 							},
-							"collapsed": false
+							"Properties": {
+								"IsSyMSCDMDatabase": true
+							},
+							"Source": {
+								"Provider": "ADLS",
+								"Location": "abfss://datalake@mjf2023datalake.dfs.core.windows.net/synapse",
+								"Properties": {
+									"FormatType": "csv",
+									"LinkedServiceName": "synapsemjf2023-WorkspaceDefaultStorage"
+								}
+							}
 						},
-						"source": [
-							"%%pyspark\r\n",
-							"df = spark.read.load('abfss://datalake@mjf2023datalake.dfs.core.windows.net/06/csv/2019.csv', format='csv'\r\n",
-							"## If header exists uncomment line below\r\n",
-							"##, header=True\r\n",
-							")\r\n",
-							"display(df.limit(10))"
-						],
-						"outputs": [],
-						"execution_count": 3
+						"Source": {
+							"Type": "SPARK"
+						}
+					},
+					{
+						"ActionType": "CREATE",
+						"OldEntity": null,
+						"NewEntity": {
+							"Name": "Customer",
+							"EntityType": "TABLE",
+							"Namespace": {
+								"DatabaseName": "XYZ"
+							},
+							"Description": "",
+							"TableType": "EXTERNAL",
+							"Origin": {
+								"Type": "SPARK"
+							},
+							"StorageDescriptor": {
+								"Columns": [
+									{
+										"Name": "CustomerID",
+										"OriginDataTypeName": {
+											"TypeName": "string",
+											"IsComplexType": false,
+											"IsNullable": false,
+											"Length": 256,
+											"Properties": {
+												"HIVE_TYPE_STRING": "string"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "Name",
+										"Description": "",
+										"OriginDataTypeName": {
+											"TypeName": "integer",
+											"IsComplexType": false,
+											"IsNullable": false,
+											"Properties": {
+												"HIVE_TYPE_STRING": "integer"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									}
+								],
+								"Format": {
+									"InputFormat": "org.apache.hadoop.mapred.SequenceFileInputFormat",
+									"OutputFormat": "org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat",
+									"FormatType": "csv",
+									"SerializeLib": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe",
+									"Properties": {
+										"path": "abfss://datalake@mjf2023datalake.dfs.core.windows.net/synapse/Customer",
+										"delimiter": ",",
+										"multiLine": "false",
+										"firstRowAsHeader": "false",
+										"serialization.format": "1",
+										"escape": "\\",
+										"quote": "\"",
+										"FormatTypeSetToDatabaseDefault": true,
+										"header": "false"
+									}
+								},
+								"Source": {
+									"Provider": "ADLS",
+									"Location": "abfss://datalake@mjf2023datalake.dfs.core.windows.net/synapse/Customer",
+									"Properties": {
+										"LinkedServiceName": "synapsemjf2023-WorkspaceDefaultStorage",
+										"LocationSetToDatabaseDefault": true
+									}
+								},
+								"Properties": {
+									"textinputformat.record.delimiter": ",",
+									"compression": "{\"type\":\"None\",\"level\":\"optimal\"}",
+									"derivedModelAttributeInfo": "{\"attributeReferences\":{}}"
+								},
+								"Compressed": false,
+								"IsStoredAsSubdirectories": false
+							},
+							"Properties": {
+								"Description": "",
+								"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
+								"PrimaryKeys": "CustomerID",
+								"spark.sql.sources.provider": "csv"
+							},
+							"Retention": 0,
+							"Temporary": false,
+							"IsRewriteEnabled": false
+						},
+						"Source": {
+							"Type": "SPARK"
+						}
 					}
 				]
 			},

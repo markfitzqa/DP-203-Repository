@@ -11,16 +11,10 @@
 		"datalake_accountKey": {
 			"value": ""
 		},
-		"productssummary_accountKey": {
-			"value": ""
-		},
 		"synapsemjf2023-WorkspaceDefaultSqlServer_connectionString": {
 			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:synapsemjf2023.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
 		"datalake_properties_typeProperties_url": {
-			"value": "https://mjf2023datalake.dfs.core.windows.net/"
-		},
-		"productssummary_properties_typeProperties_url": {
 			"value": "https://mjf2023datalake.dfs.core.windows.net/"
 		},
 		"synapsemjf2023-WorkspaceDefaultStorage_properties_typeProperties_url": {
