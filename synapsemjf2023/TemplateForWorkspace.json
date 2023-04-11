@@ -684,6 +684,111 @@
 						"Source": {
 							"Type": "SPARK"
 						}
+					},
+					{
+						"ActionType": "CREATE",
+						"OldEntity": null,
+						"NewEntity": {
+							"Name": "Products",
+							"EntityType": "TABLE",
+							"Namespace": {
+								"DatabaseName": "AnotherDB"
+							},
+							"Description": "",
+							"TableType": "EXTERNAL",
+							"Origin": {
+								"Type": "SPARK"
+							},
+							"StorageDescriptor": {
+								"Columns": [
+									{
+										"Name": "ProductID",
+										"OriginDataTypeName": {
+											"TypeName": "integer",
+											"IsComplexType": false,
+											"IsNullable": false,
+											"Properties": {
+												"HIVE_TYPE_STRING": "integer"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "Name",
+										"Description": "",
+										"OriginDataTypeName": {
+											"TypeName": "string",
+											"IsComplexType": false,
+											"IsNullable": false,
+											"Length": 100,
+											"Properties": {
+												"HIVE_TYPE_STRING": "string"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "Price",
+										"Description": "",
+										"OriginDataTypeName": {
+											"TypeName": "decimal",
+											"IsComplexType": false,
+											"IsNullable": false,
+											"Precision": 18,
+											"Scale": 2,
+											"Properties": {
+												"HIVE_TYPE_STRING": "decimal"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									}
+								],
+								"Format": {
+									"InputFormat": "org.apache.hadoop.mapred.SequenceFileInputFormat",
+									"OutputFormat": "org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat",
+									"FormatType": "csv",
+									"SerializeLib": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe",
+									"Properties": {
+										"path": "abfss://databasefolder@mjf2023datalake.dfs.core.windows.net//",
+										"delimiter": ",",
+										"multiLine": "false",
+										"firstRowAsHeader": "true",
+										"serialization.format": "1",
+										"escape": "\\",
+										"quote": "\"",
+										"FormatTypeSetToDatabaseDefault": false,
+										"header": "true"
+									}
+								},
+								"Source": {
+									"Provider": "ADLS",
+									"Location": "abfss://databasefolder@mjf2023datalake.dfs.core.windows.net//",
+									"Properties": {
+										"LinkedServiceName": "datalake",
+										"LocationSetToDatabaseDefault": false
+									}
+								},
+								"Properties": {
+									"textinputformat.record.delimiter": ",",
+									"compression": "{\"type\":\"None\",\"level\":\"optimal\"}",
+									"derivedModelAttributeInfo": "{\"attributeReferences\":{}}"
+								},
+								"Compressed": false,
+								"IsStoredAsSubdirectories": false
+							},
+							"Properties": {
+								"Description": "",
+								"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
+								"PrimaryKeys": "ProductID",
+								"spark.sql.sources.provider": "csv"
+							},
+							"Retention": 0,
+							"Temporary": false,
+							"IsRewriteEnabled": false
+						},
+						"Source": {
+							"Type": "SPARK"
+						}
 					}
 				]
 			},
