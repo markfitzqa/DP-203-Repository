@@ -1,0 +1,22 @@
+{
+	"name": "AnotherDB",
+	"properties": {
+		"Name": "AnotherDB",
+		"EntityType": "DATABASE",
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"Properties": {
+			"IsSyMSCDMDatabase": true
+		},
+		"Source": {
+			"Provider": "ADLS",
+			"Location": "abfss://databasefolder@mjf2023datalake.dfs.core.windows.net/",
+			"Properties": {
+				"FormatType": "csv",
+				"LinkedServiceName": "datalake"
+			}
+		}
+	},
+	"type": "DATABASE"
+}
