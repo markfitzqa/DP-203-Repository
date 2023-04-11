@@ -1,5 +1,5 @@
 {
-	"name": "Viewing Product data",
+	"name": "Viewing Product data 2",
 	"properties": {
 		"content": {
 			"query": "-- This is auto-generated code\nSELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://mjf2023datalake.dfs.core.windows.net/datalake/04/csv/product.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION = '2.0'\n    ) AS [result]\n",
