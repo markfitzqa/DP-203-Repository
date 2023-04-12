@@ -7,8 +7,7 @@
 			"Type": "SPARK"
 		},
 		"Properties": {
-			"IsSyMSCDMDatabase": true,
-			"DerivedModelDBInfo": "{\"ModelDirectives\":{\"BaseModel\":{\"Name\":\"Retail\",\"Version\":\"1.2.0\"}}}"
+			"IsSyMSCDMDatabase": true
 		},
 		"Source": {
 			"Provider": "ADLS",
@@ -17,7 +16,10 @@
 				"FormatType": "csv",
 				"LinkedServiceName": "datalake"
 			}
-		}
+		},
+		"PublishStatus": "PUBLISHED",
+		"ObjectVersion": 2,
+		"ObjectId": "1cecfe02-aa6f-4290-b3cd-580116e75d71"
 	},
 	"type": "DATABASE"
 }

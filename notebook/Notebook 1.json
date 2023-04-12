@@ -9,11 +9,12 @@
 			"executorMemory": "28g",
 			"executorCores": 4,
 			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "72bbc362-39a1-45ce-91a3-fa46575f7c9f"
+				"spark.autotune.trackingId": "efb5e3cc-438c-4cc6-848b-efa48c210db9"
 			}
 		},
 		"metadata": {
@@ -39,8 +40,7 @@
 				"source": [
 					"%%pyspark\n",
 					"spark.sql(\"DROP DATABASE IF EXISTS default CASCADE\")"
-				],
-				"execution_count": null
+				]
 			}
 		]
 	}
