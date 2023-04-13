@@ -98,6 +98,58 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/AzureSqlTable2')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AdventureworksBie2eDW",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SKProduct",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductBusinessKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SubcategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Colour",
+						"type": "nvarchar"
+					},
+					{
+						"name": "StyleSizeProductLine",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimProduct"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/AdventureworksBie2eDW')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/AdventureworksBie2eDW')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -321,7 +373,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "1eef7a97-6bb2-4e53-9376-821181a5abfa"
+						"spark.autotune.trackingId": "af0cf854-a379-4c2e-b90d-c6f849096aa9"
 					}
 				},
 				"metadata": {
@@ -339,7 +391,6 @@
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"%%pyspark\n",
 							"spark.sql(\"DROP DATABASE IF EXISTS default CASCADE\")"
