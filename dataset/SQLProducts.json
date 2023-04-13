@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable2",
+	"name": "SQLProducts",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AdventureworksBie2eDW",
