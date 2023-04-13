@@ -1,0 +1,6 @@
+{
+	"name": "BarryHost",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
