@@ -1,0 +1,22 @@
+{
+	"name": "Daily 2am",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2023-04-13T10:47:00Z",
+				"timeZone": "UTC",
+				"schedule": {
+					"hours": [
+						2
+					]
+				}
+			}
+		}
+	}
+}
