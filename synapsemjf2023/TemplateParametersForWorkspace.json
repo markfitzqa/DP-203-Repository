@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "synapsemjf2023"
+		},
+		"AdventureworksBie2eDW_connectionString": {
+			"value": ""
+		},
+		"datalake_accountKey": {
+			"value": ""
+		},
+		"iotdata_accountKey": {
+			"value": ""
+		},
+		"mydw_connectionString": {
+			"value": ""
+		},
+		"synapsemjf2023-WorkspaceDefaultSqlServer_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:synapsemjf2023.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"datalake_properties_typeProperties_url": {
+			"value": "https://mjf2023datalake.dfs.core.windows.net/"
+		},
+		"iotdata_properties_typeProperties_url": {
+			"value": "https://streamdataiot.dfs.core.windows.net/"
+		},
+		"synapsemjf2023-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://mjf2023datalake.dfs.core.windows.net"
+		}
+	}
+}
