@@ -701,7 +701,8 @@
 								"Type": "SPARK"
 							},
 							"Properties": {
-								"IsSyMSCDMDatabase": true
+								"IsSyMSCDMDatabase": true,
+								"DerivedModelDBInfo": "{\"ModelDirectives\":{\"BaseModel\":{\"Name\":\"Manufacturing\",\"Version\":\"1.3.0\"}}}"
 							},
 							"Source": {
 								"Provider": "ADLS",
@@ -711,6 +712,123 @@
 									"LinkedServiceName": "synapsemjf2023-WorkspaceDefaultStorage"
 								}
 							}
+						},
+						"Source": {
+							"Type": "SPARK"
+						}
+					},
+					{
+						"ActionType": "CREATE",
+						"OldEntity": null,
+						"NewEntity": {
+							"Name": "AircraftProduct",
+							"EntityType": "TABLE",
+							"Namespace": {
+								"DatabaseName": "TuesdayLake"
+							},
+							"Description": "An Industrial Chemical product or good offered for sale.",
+							"TableType": "EXTERNAL",
+							"Origin": {
+								"Type": "SPARK"
+							},
+							"StorageDescriptor": {
+								"Columns": [
+									{
+										"Name": "ProductId",
+										"Description": "The unique identifier of a Product.",
+										"OriginDataTypeName": {
+											"TypeName": "long",
+											"IsComplexType": false,
+											"IsNullable": false,
+											"Properties": {
+												"HIVE_TYPE_STRING": "long"
+											}
+										},
+										"BaseAttributeReference": {
+											"Entity": "AircraftProduct.cdm.json/AircraftProduct",
+											"Name": "ProductId"
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "HandlingProceduresStatement",
+										"Description": "A statement of the appropriate handling techniques for the associated AG Chemical product.",
+										"OriginDataTypeName": {
+											"TypeName": "string",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Length": 2048,
+											"Properties": {
+												"HIVE_TYPE_STRING": "string"
+											}
+										},
+										"BaseAttributeReference": {
+											"Entity": "AircraftProduct.cdm.json/AircraftProduct",
+											"Name": "HandlingProceduresStatement"
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "ProductTypeId",
+										"Description": "The unique identifier of a Product Type.",
+										"OriginDataTypeName": {
+											"TypeName": "integer",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Properties": {
+												"HIVE_TYPE_STRING": "integer"
+											}
+										},
+										"BaseAttributeReference": {
+											"Entity": "AircraftProduct.cdm.json/AircraftProduct",
+											"Name": "ProductTypeId"
+										},
+										"DeltaFormatInvalidMessages": []
+									}
+								],
+								"Format": {
+									"InputFormat": "org.apache.hadoop.mapred.SequenceFileInputFormat",
+									"OutputFormat": "org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat",
+									"FormatType": "csv",
+									"SerializeLib": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe",
+									"Properties": {
+										"path": "abfss://datalake@mjf2023datalake.dfs.core.windows.net/TuesdayLake/AircraftProduct",
+										"delimiter": ",",
+										"multiLine": "false",
+										"firstRowAsHeader": "false",
+										"serialization.format": "1",
+										"escape": "\\",
+										"quote": "\"",
+										"FormatTypeSetToDatabaseDefault": true,
+										"header": "false"
+									}
+								},
+								"Source": {
+									"Provider": "ADLS",
+									"Location": "abfss://datalake@mjf2023datalake.dfs.core.windows.net/TuesdayLake/AircraftProduct",
+									"Properties": {
+										"LinkedServiceName": "synapsemjf2023-WorkspaceDefaultStorage",
+										"LocationSetToDatabaseDefault": true
+									}
+								},
+								"Properties": {
+									"textinputformat.record.delimiter": ",",
+									"compression": "{\"type\":\"None\",\"level\":\"optimal\"}",
+									"derivedModelAttributeInfo": "{\"attributeReferences\":{\"ProductId\":{\"entity\":\"AircraftProduct.cdm.json/AircraftProduct\",\"name\":\"ProductId\"},\"HandlingProceduresStatement\":{\"entity\":\"AircraftProduct.cdm.json/AircraftProduct\",\"name\":\"HandlingProceduresStatement\"},\"ProductTypeId\":{\"entity\":\"AircraftProduct.cdm.json/AircraftProduct\",\"name\":\"ProductTypeId\"}}}"
+								},
+								"Compressed": false,
+								"IsStoredAsSubdirectories": false
+							},
+							"Properties": {
+								"DerivedModelEntityInfo": "{\"entityDirectives\":{\"name\":\"AircraftProduct\",\"description\":\"An Industrial Chemical product or good offered for sale.\",\"baseEntityReference\":{\"name\":\"AircraftProduct\",\"path\":\"AircraftProduct.cdm.json/AircraftProduct\"},\"primaryKey\":[\"ProductId\"],\"projectionInfo\":{\"attributes\":[{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"AircraftProduct.cdm.json/AircraftProduct\",\"name\":\"ProductId\"},\"dataType\":\"long\",\"description\":\"The unique identifier of a Product.\",\"isNullable\":false,\"name\":\"ProductId\"},{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"AircraftProduct.cdm.json/AircraftProduct\",\"name\":\"HandlingProceduresStatement\"},\"dataType\":\"string\",\"dataTypeLength\":2048,\"description\":\"A statement of the appropriate handling techniques for the associated AG Chemical product.\",\"isNullable\":true,\"name\":\"HandlingProceduresStatement\"},{\"type\":\"Existing\",\"attributeReference\":{\"entity\":\"AircraftProduct.cdm.json/AircraftProduct\",\"name\":\"ProductTypeId\"},\"dataType\":\"integer\",\"description\":\"The unique identifier of a Product Type.\",\"isNullable\":true,\"name\":\"ProductTypeId\"}]}}}",
+								"Description": "An Industrial Chemical product or good offered for sale.",
+								"DisplayFolderInfo": "{\"name\":\"Product\",\"colorCode\":\"#BD4B37\"}",
+								"PrimaryKeys": "ProductId",
+								"spark.sql.sources.provider": "csv"
+							},
+							"Retention": 0,
+							"Temporary": false,
+							"IsRewriteEnabled": false
 						},
 						"Source": {
 							"Type": "SPARK"
@@ -736,8 +854,8 @@
 										"Name": "CustomerID",
 										"OriginDataTypeName": {
 											"TypeName": "integer",
-											"IsNullable": false,
 											"IsComplexType": false,
+											"IsNullable": false,
 											"Properties": {
 												"HIVE_TYPE_STRING": "integer"
 											}
@@ -749,8 +867,8 @@
 										"Description": "",
 										"OriginDataTypeName": {
 											"TypeName": "string",
-											"IsNullable": false,
 											"IsComplexType": false,
+											"IsNullable": false,
 											"Length": 256,
 											"Properties": {
 												"HIVE_TYPE_STRING": "string"
@@ -763,8 +881,8 @@
 										"Description": "",
 										"OriginDataTypeName": {
 											"TypeName": "date",
-											"IsNullable": true,
 											"IsComplexType": false,
+											"IsNullable": true,
 											"Properties": {
 												"DateFormat": "YYYY-MM-DD",
 												"HIVE_TYPE_STRING": "date"
@@ -810,13 +928,146 @@
 								"Description": "",
 								"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
 								"PrimaryKeys": "CustomerID",
-								"spark.sql.sources.provider": "csv",
-								"sql:IsAppendOnly": false
+								"spark.sql.sources.provider": "csv"
 							},
 							"Retention": 0,
 							"Temporary": false,
-							"IsRewriteEnabled": false,
-							"Partitioning": {}
+							"IsRewriteEnabled": false
+						},
+						"Source": {
+							"Type": "SPARK"
+						}
+					},
+					{
+						"ActionType": "CREATE",
+						"OldEntity": null,
+						"NewEntity": {
+							"Name": "RetailDB",
+							"EntityType": "TABLE",
+							"Namespace": {
+								"DatabaseName": "TuesdayLake"
+							},
+							"Description": "",
+							"TableType": "EXTERNAL",
+							"Origin": {
+								"Type": "SPARK"
+							},
+							"StorageDescriptor": {
+								"Columns": [
+									{
+										"Name": "C1",
+										"OriginDataTypeName": {
+											"TypeName": "long",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Properties": {
+												"HIVE_TYPE_STRING": "long"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "C2",
+										"OriginDataTypeName": {
+											"TypeName": "timestamp",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Properties": {
+												"TimestampFormat": "YYYY-MM-DD HH:MM:SS.fffffffff",
+												"HIVE_TYPE_STRING": "timestamp"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "C3",
+										"OriginDataTypeName": {
+											"TypeName": "long",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Properties": {
+												"HIVE_TYPE_STRING": "long"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "C4",
+										"OriginDataTypeName": {
+											"TypeName": "long",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Properties": {
+												"HIVE_TYPE_STRING": "long"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "C5",
+										"OriginDataTypeName": {
+											"TypeName": "long",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Properties": {
+												"HIVE_TYPE_STRING": "long"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									},
+									{
+										"Name": "C6",
+										"OriginDataTypeName": {
+											"TypeName": "long",
+											"IsComplexType": false,
+											"IsNullable": true,
+											"Properties": {
+												"HIVE_TYPE_STRING": "long"
+											}
+										},
+										"DeltaFormatInvalidMessages": []
+									}
+								],
+								"Format": {
+									"InputFormat": "org.apache.hadoop.mapred.SequenceFileInputFormat",
+									"OutputFormat": "org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat",
+									"FormatType": "csv",
+									"SerializeLib": "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe",
+									"Properties": {
+										"path": "abfss://datalake@mjf2023datalake.dfs.core.windows.net/04/csv/salesorder.csv",
+										"delimiter": ",",
+										"multiLine": "false",
+										"firstRowAsHeader": "false",
+										"serialization.format": "1",
+										"FormatTypeSetToDatabaseDefault": false,
+										"header": "false"
+									}
+								},
+								"Source": {
+									"Provider": "ADLS",
+									"Location": "abfss://datalake@mjf2023datalake.dfs.core.windows.net/04/csv/salesorder.csv",
+									"Properties": {
+										"LinkedServiceName": "synapsemjf2023-WorkspaceDefaultStorage",
+										"LocationSetToDatabaseDefault": false
+									}
+								},
+								"Properties": {
+									"textinputformat.record.delimiter": ",",
+									"compression": "{\"type\":\"None\",\"level\":\"optimal\"}",
+									"derivedModelAttributeInfo": "{\"attributeReferences\":{}}"
+								},
+								"Compressed": false,
+								"IsStoredAsSubdirectories": false
+							},
+							"Properties": {
+								"Description": "",
+								"DisplayFolderInfo": "{\"name\":\"Others\",\"colorCode\":\"\"}",
+								"PrimaryKeys": "",
+								"spark.sql.sources.provider": "csv"
+							},
+							"Retention": 0,
+							"Temporary": false,
+							"IsRewriteEnabled": false
 						},
 						"Source": {
 							"Type": "SPARK"
