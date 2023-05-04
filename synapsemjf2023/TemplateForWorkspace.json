@@ -305,6 +305,29 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/KPMGProductsJSON')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "MJFDATALAKE",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "products-exported"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/MJFDATALAKE')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/ProductsCSV')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
