@@ -1058,6 +1058,9 @@
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
+				"folder": {
+					"name": "Explolration"
+				},
 				"content": {
 					"query": "-- This is auto-generated code\nselect * from (SELECT\n    TOP 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://mjf2023datalake.dfs.core.windows.net/datalake/04/csv/customer.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION = '2.0'\n    ) \n    AS [result]) as B \n\n",
 					"metadata": {
